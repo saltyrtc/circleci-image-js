@@ -5,3 +5,4 @@ Docker image for CircleCI:
 - Firefox
 - Chromium
 - Libsodium
+- SaltyRTC server

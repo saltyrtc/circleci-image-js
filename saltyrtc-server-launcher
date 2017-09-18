@@ -1,0 +1,9 @@
+#!/bin/bash
+saltyrtc-server \
+    -v 6 \
+    serve \
+    -sc /saltyrtc/certs/saltyrtc.crt \
+    -sk /saltyrtc/certs/saltyrtc.key \
+    -p 8765 \
+    -k $SALTYRTC_SERVER_PERMANENT_KEY > /saltyrtc/serverlog.txt 2>&1 &
+echo $!
