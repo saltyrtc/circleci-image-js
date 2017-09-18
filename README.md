@@ -1,7 +1,7 @@
 Docker image for CircleCI:
 
 - Ubuntu
-- NodeJS
+- NodeJS / npm
 - Firefox
 - Chromium
 - Libsodium
