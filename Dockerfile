@@ -51,10 +51,9 @@ RUN apt-get update -qqy \
  && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 # NodeJS / npm
-RUN apt-get update -qqy \
- && apt-get install -qqy --no-install-recommends \
-    nodejs npm \
- && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+RUN wget -qO- https://deb.nodesource.com/setup_8.x | bash - && \
+    apt-get install -y nodejs && \
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 # Add wrapper scripts
 ADD xvfb-chromium /usr/local/bin/xvfb-chromium
