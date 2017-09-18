@@ -92,8 +92,10 @@ USER ci
 RUN sudo echo ''
 
 # Add certificates to Firefox and Chrome
+RUN xvfb-chromium & CHROMIUM_PID=$! && sleep 2 && kill $CHROMIUM_PID
 RUN mkdir -p ~/.mozilla/firefox/saltyrtc && \
-    certutil -d ~/.mozilla/firefox/saltyrtc -A -n saltyrtc-test-ca -t Ccw,, -i /saltyrtc/certs/saltyrtc.crt
+    certutil -d ~/.mozilla/firefox/saltyrtc -A -n saltyrtc-test-ca -t Ccw,, -i /saltyrtc/certs/saltyrtc.crt && \
+    certutil -d sql:$HOME/.pki/nssdb -A -n saltyrtc-test-ca -t Ccw,, -i /saltyrtc/certs/saltyrtc.crt
 
 # Increase websocket connection limit
 RUN echo 'user_pref("network.websocket.max-connections", 400);' >> ~/.mozilla/firefox/saltyrtc/prefs.js
