@@ -72,9 +72,8 @@ RUN useradd ci \
  && echo 'ci:secret' | chpasswd
 
 # Create test certificates
-ADD saltyrtc.ext /saltyrtc/certs/saltyrtc.ext
-RUN openssl req -new -newkey rsa:1024 -nodes -sha256 -out /saltyrtc/certs/saltyrtc.csr -keyout /saltyrtc/certs/saltyrtc.key -subj '/C=CH/O=SaltyRTC/CN=localhost/' && \
-    openssl x509 -req -days 1825 -in /saltyrtc/certs/saltyrtc.csr -signkey /saltyrtc/certs/saltyrtc.key -sha256 -extfile /saltyrtc/certs/saltyrtc.ext -out /saltyrtc/certs/saltyrtc.crt && \
+ADD generate-cert.sh /saltyrtc/certs/generate-cert.sh
+RUN bash /saltyrtc/certs/generate-cert.sh && \
     chmod a+r /saltyrtc/certs/*
 
 # Update directory permissions
@@ -95,7 +94,7 @@ RUN sudo echo ''
 RUN xvfb-chromium & CHROMIUM_PID=$! && sleep 2 && kill $CHROMIUM_PID
 RUN mkdir -p ~/.mozilla/firefox/saltyrtc && \
     certutil -d ~/.mozilla/firefox/saltyrtc -A -n saltyrtc-test-ca -t Ccw,, -i /saltyrtc/certs/saltyrtc.crt && \
-    certutil -d sql:$HOME/.pki/nssdb -A -n saltyrtc-test-ca -t Ccw,, -i /saltyrtc/certs/saltyrtc.crt
+    certutil -d sql:$HOME/.pki/nssdb -A -t "P,," -n saltyrtc-test-ca -i /saltyrtc/certs/saltyrtc.crt
 
 # Increase websocket connection limit
 RUN echo 'user_pref("network.websocket.max-connections", 400);' >> ~/.mozilla/firefox/saltyrtc/prefs.js
