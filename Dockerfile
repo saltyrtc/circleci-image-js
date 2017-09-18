@@ -38,6 +38,12 @@ RUN apt-get update -qqy \
     chromium-browser \
  && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
+# Add wrapper scripts
+ADD xvfb-chromium /usr/local/bin/xvfb-chromium
+ADD xvfb-firefox /usr/local/bin/xvfb-firefox
+RUN chmod +x /usr/local/bin/xvfb-chromium && \
+    chmod +x /usr/local/bin/xvfb-firefox
+
 # Create non-root user
 RUN useradd ci \
     --shell /bin/bash  \
@@ -48,12 +54,6 @@ RUN useradd ci \
 
 # Switch user
 USER ci
-
-# Env vars
-ENV SCREEN_WIDTH=800 \
-    SCREEN_HEIGHT=600 \
-    SCREEN_DEPTH=16 \
-    DISPLAY=:99.0
 
 # Running this command as sudo just to avoid the message:
 # To run a command as administrator (user "root"), use "sudo <command>". See "man sudo_root" for details.
