@@ -1,6 +1,11 @@
 version: 2
 
 references:
+  build-jobs: &build-jobs
+    - build-firefox-50.1.0
+    - build-firefox-52.6.0esr
+    - build-firefox-58.0.2
+    - build-chromium-latest
   build-steps: &build-steps
       - checkout
       - setup_remote_docker
@@ -61,8 +66,7 @@ workflows:
 
   # Build on push
   on_push:
-    jobs:
-      - /build-.*/
+    jobs: *build-jobs
 
   # Build every week on Monday at 04:00 am
   weekly:
@@ -73,5 +77,4 @@ workflows:
             branches:
               only:
                 - master
-    jobs:
-      - /build-.*/
+    jobs: *build-jobs
