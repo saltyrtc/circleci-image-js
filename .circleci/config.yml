@@ -23,6 +23,7 @@ references:
             cd $BROWSER &&
             docker build \
               --no-cache \
+              --build-arg BROWSER_VERSION=$BROWSER_VERSION \
               -t saltyrtc/circleci-image-js:${BROWSER}-${BROWSER_VERSION} \
               .
       - deploy:
