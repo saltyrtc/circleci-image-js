@@ -1,0 +1,44 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: docker:stable
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Docker image
+          command: |
+            docker build \
+              --no-cache \
+              -t saltyrtc/circleci-image-js:latest \
+              -t saltyrtc/circleci-image-js:${CIRCLE_BRANCH} \
+              .
+      - deploy:
+          name: Push Docker image
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_API_KEY && \
+            docker push saltyrtc/circleci-image-js
+workflows:
+  version: 2
+
+  # Build on push to master
+  on_push:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
+
+  # Build every week on Monday at 04:00 am
+  weekly:
+    triggers:
+      - schedule:
+          cron: "0 4 * * 1"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build
