@@ -3,7 +3,7 @@ FROM saltyrtc/circleci-image-js-base:build
 # Firefox
 ARG BROWSER_VERSION=50.1.0
 RUN apt-get update -qqy \
- && apt-get -qqy --no-install-recommends install firefox \
+ && apt-get -qqy --no-install-recommends install firefox libasound2 \
  && rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
  && wget --no-verbose -O /tmp/firefox.tar.bz2 https://download-installer.cdn.mozilla.net/pub/firefox/releases/$BROWSER_VERSION/linux-x86_64/en-US/firefox-$BROWSER_VERSION.tar.bz2 \
  && apt-get -y purge firefox \
