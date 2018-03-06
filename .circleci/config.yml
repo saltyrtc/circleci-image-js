@@ -15,7 +15,7 @@ references:
             cd base &&
             docker build \
               --no-cache \
-              -t saltyrtc/circleci-image-js-base:build
+              -t saltyrtc/circleci-image-js-base:build \
               .
       - run:
           name: Build ${BROWSER} Docker image
