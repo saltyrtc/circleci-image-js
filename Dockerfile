@@ -14,6 +14,7 @@ RUN apt-get update -qqy \
     unzip \
     ca-certificates \
     sudo \
+    git \
     locales \
     libsodium18 \
     libsodium-dev \
