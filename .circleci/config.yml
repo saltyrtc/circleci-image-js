@@ -1,35 +1,68 @@
 version: 2
-jobs:
-  build:
-    docker:
-      - image: docker:stable
-    steps:
+
+references:
+  build-steps: &build-steps
       - checkout
       - setup_remote_docker
       - run:
-          name: Build Docker image
+          name: Build base Docker image
           command: |
+            cd base &&
             docker build \
               --no-cache \
-              -t saltyrtc/circleci-image-js:latest \
-              -t saltyrtc/circleci-image-js:${CIRCLE_BRANCH} \
+              -t saltyrtc/circleci-image-js-base:build
+              .
+      - run:
+          name: Build ${BROWSER} Docker image
+          command: |
+            cd $BROWSER &&
+            docker build \
+              --no-cache \
+              -t saltyrtc/circleci-image-js:${BROWSER}-${BROWSER_VERSION} \
               .
       - deploy:
           name: Push Docker image
           command: |
             docker login -u $DOCKER_USER -p $DOCKER_API_KEY && \
-            docker push saltyrtc/circleci-image-js
+            docker push saltyrtc/circleci-image-js:${BROWSER}-${BROWSER_VERSION}
+
+jobs:
+  build-firefox-50.1.0:
+    docker:
+      - image: docker:stable
+    steps: *build-steps
+    environment:
+      - BROWSER: firefox
+      - BROWSER_VERSION: 50.1.0
+  build-firefox-52.6.0esr:
+    docker:
+      - image: docker:stable
+    steps: *build-steps
+    environment:
+      - BROWSER: firefox
+      - BROWSER_VERSION: 52.6.0esr
+  build-firefox-58.0.2:
+    docker:
+      - image: docker:stable
+    steps: *build-steps
+    environment:
+      - BROWSER: firefox
+      - BROWSER_VERSION: 58.0.2
+  build-chromium-latest:
+    docker:
+      - image: docker:stable
+    steps: *build-steps
+    environment:
+      - BROWSER: chromium
+      - BROWSER_VERSION: latest
+
 workflows:
   version: 2
 
-  # Build on push to master
+  # Build on push
   on_push:
     jobs:
-      - build:
-          filters:
-            branches:
-              only:
-                - master
+      - /build-.*/
 
   # Build every week on Monday at 04:00 am
   weekly:
@@ -41,4 +74,4 @@ workflows:
               only:
                 - master
     jobs:
-      - build
+      - /build-.*/
