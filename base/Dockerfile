@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:bionic
 
 # No interactive frontend during docker build
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -16,7 +16,7 @@ RUN apt-get update -qqy \
     sudo \
     git \
     locales \
-    libsodium18 \
+    libsodium23 \
     libsodium-dev \
     libnss3-tools \
     python3 \
@@ -47,6 +47,7 @@ RUN useradd ci \
 
 # Create test certificates
 ADD generate-cert.sh /saltyrtc/certs/generate-cert.sh
+ADD openssl.cnf /saltyrtc/certs/openssl.cnf
 RUN bash /saltyrtc/certs/generate-cert.sh && \
     chmod a+r /saltyrtc/certs/*
 

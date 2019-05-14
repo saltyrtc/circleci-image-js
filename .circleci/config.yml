@@ -2,9 +2,8 @@ version: 2
 
 references:
   build-jobs: &build-jobs
-    - build-firefox-50.1.0
-    - build-firefox-52.6.0esr
-    - build-firefox-61.0.1
+    - build-firefox-60.6.3esr
+    - build-firefox-66.0.5
     - build-chromium-latest
   build-steps: &build-steps
       - checkout
@@ -33,27 +32,20 @@ references:
             docker push saltyrtc/circleci-image-js:${BROWSER}-${BROWSER_VERSION}
 
 jobs:
-  build-firefox-50.1.0:
+  build-firefox-60.6.3esr:
     docker:
       - image: docker:stable
     steps: *build-steps
     environment:
       - BROWSER: firefox
-      - BROWSER_VERSION: 50.1.0
-  build-firefox-52.6.0esr:
+      - BROWSER_VERSION: 60.6.3esr
+  build-firefox-66.0.5:
     docker:
       - image: docker:stable
     steps: *build-steps
     environment:
       - BROWSER: firefox
-      - BROWSER_VERSION: 52.6.0esr
-  build-firefox-61.0.1:
-    docker:
-      - image: docker:stable
-    steps: *build-steps
-    environment:
-      - BROWSER: firefox
-      - BROWSER_VERSION: 61.0.1
+      - BROWSER_VERSION: 66.0.5
   build-chromium-latest:
     docker:
       - image: docker:stable

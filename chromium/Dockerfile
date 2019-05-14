@@ -20,4 +20,4 @@ RUN sudo echo ''
 
 # Add certificates to Chrome
 RUN xvfb-chromium & CHROMIUM_PID=$! && sleep 2 && kill $CHROMIUM_PID
-RUN certutil -d sql:$HOME/.pki/nssdb -A -t "P,," -n saltyrtc-test-ca -i /saltyrtc/certs/saltyrtc.crt
+RUN certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n saltyrtc-test-ca -i /saltyrtc/certs/ca.cert.pem
