@@ -1,7 +1,7 @@
 FROM saltyrtc/circleci-image-js-base:build
 
 # Firefox
-ARG BROWSER_VERSION=50.1.0
+ARG BROWSER_VERSION
 RUN apt-get update -qqy \
  && apt-get -qqy --no-install-recommends install firefox libasound2 \
  && rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
@@ -26,8 +26,8 @@ USER ci
 RUN sudo echo ''
 
 # Add certificates to Firefox
-RUN mkdir -p ~/.mozilla/firefox/saltyrtc && \
-    certutil -d ~/.mozilla/firefox/saltyrtc -A -n saltyrtc-test-ca -t Ccw,, -i /saltyrtc/certs/saltyrtc.crt
+RUN mkdir -p /home/ci/.mozilla/firefox/saltyrtc && \
+    certutil -d sql:/home/ci/.mozilla/firefox/saltyrtc -A -n saltyrtc-test-ca -t C,, -i /saltyrtc/certs/ca.cert.pem
 
 # Increase websocket connection limit
-RUN echo 'user_pref("network.websocket.max-connections", 400);' >> ~/.mozilla/firefox/saltyrtc/prefs.js
+RUN echo 'user_pref("network.websocket.max-connections", 400);' >> /home/ci/.mozilla/firefox/saltyrtc/prefs.js
