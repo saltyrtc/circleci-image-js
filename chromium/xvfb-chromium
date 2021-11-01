@@ -20,7 +20,7 @@ xvfb=$!
 
 export DISPLAY=:99
 
-chromium-browser --no-sandbox $@ &
+chromium-browser --disable-setuid-sandbox --enable-logging --no-sandbox $@ &
 chromium=$!
 
 wait $chromium
