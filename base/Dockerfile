@@ -33,7 +33,7 @@ ENV LC_ALL=en_US.UTF-8 \
     LANG=en_US.UTF-8
 
 # NodeJS / npm
-RUN wget -qO- https://deb.nodesource.com/setup_8.x | bash - && \
+RUN wget -qO- https://deb.nodesource.com/setup_16.x | bash - && \
     apt-get install -y nodejs && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
