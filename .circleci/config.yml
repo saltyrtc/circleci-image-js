@@ -3,9 +3,9 @@ version: 2
 
 shared:
   jobs: &jobs
-    - build-firefox-60.6.3esr:
+    - build-firefox-91esr:
         context: Docker Hub Upload
-    - build-firefox-66.0.5:
+    - build-firefox-97:
         context: Docker Hub Upload
     - build-chromium-latest:
         context: Docker Hub Upload
@@ -41,21 +41,21 @@ shared:
 
 
 jobs:
-  build-firefox-60.6.3esr:
+  build-firefox-91esr:
     <<: *build
     docker:
       - image: docker:stable
     environment:
       - BROWSER: firefox
-      - BROWSER_VERSION: 60.6.3esr
+      - BROWSER_VERSION: "91.6.0esr"
 
-  build-firefox-66.0.5:
+  build-firefox-97:
     <<: *build
     docker:
       - image: docker:stable
     environment:
       - BROWSER: firefox
-      - BROWSER_VERSION: 66.0.5
+      - BROWSER_VERSION: "97.0"
 
   build-chromium-latest:
     <<: *build
