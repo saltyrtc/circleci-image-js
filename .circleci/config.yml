@@ -29,14 +29,14 @@ shared:
             docker build \
               --no-cache \
               --build-arg BROWSER_VERSION=$BROWSER_VERSION \
-              -t saltyrtc/circleci-image-js:${BROWSER}-${BROWSER_VERSION} \
+              -t saltyrtc/circleci-image-js:${BROWSER}-${DOCKER_TAG} \
               .
       - deploy:
           name: Push Docker image
           command: |
             if [[ "${CIRCLE_BRANCH}" = "master" ]]; then
               docker login -u $DOCKER_LOGIN -p $DOCKER_ACCESS_TOKEN && \
-              docker push saltyrtc/circleci-image-js:${BROWSER}-${BROWSER_VERSION}
+              docker push saltyrtc/circleci-image-js:${BROWSER}-${DOCKER_TAG}
             fi
 
 
@@ -48,6 +48,7 @@ jobs:
     environment:
       - BROWSER: firefox
       - BROWSER_VERSION: "91.6.0esr"
+      - DOCKER_TAG: "91esr"
 
   build-firefox-97:
     <<: *build
@@ -56,6 +57,7 @@ jobs:
     environment:
       - BROWSER: firefox
       - BROWSER_VERSION: "97.0"
+      - DOCKER_TAG: "97"
 
   build-chromium-latest:
     <<: *build
@@ -63,7 +65,8 @@ jobs:
       - image: docker:stable
     environment:
       - BROWSER: chromium
-      - BROWSER_VERSION: latest
+      - BROWSER_VERSION: "latest"
+      - DOCKER_TAG: "latest"
 
 
 workflows:
